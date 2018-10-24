@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AndroidApp-Eric_Bratter</string>
+    <string name="lbl_user_name">User Name</string>
+    <string name="lbl_password">Password</string>
+    <string name="btn_submit">Passing parameters - On Normal and Long Click</string>
+    <string name="btn_create_account">Create New Account - On Simple Click</string>
+    <string name="toast_glad_you_are_here">Glad you are here :-)</string>
+    <string name="toast_simple_click_message">OnSimpleClick - Navigate to New Account Creation Activity</string>
+    <string name="toast_enter_required_data">Please enter all required information</string>
+    <string name="text_welcome">Welcome to the App</string>
+    <string name="text_support_email_subject">Login Support</string>
+    <string name="text_support_email_default_text">I am having trouble logging into the application. HELP!!!!!</string>
+    <string name="text_support_email_no_client">To contact support please install an email client</string>
+</resources>
