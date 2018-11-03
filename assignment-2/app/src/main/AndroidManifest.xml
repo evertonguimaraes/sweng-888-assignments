@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".SignupActivity" android:parentActivityName=".LoginActivity" android:label="@string/create_new_account" />
-        <activity android:name=".UserProfileActivity" android:parentActivityName=".LoginActivity" android:label="Welcome"></activity>
+        <activity android:name=".UserProfileActivity" android:parentActivityName=".LoginActivity" android:label="@string/welcome"></activity>
     </application>
 
 </manifest>
