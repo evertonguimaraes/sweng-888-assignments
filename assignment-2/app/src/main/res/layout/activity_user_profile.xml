@@ -1,57 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/signup_maincontent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/linearLayoutCompat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/collapsing_toolbar_layout_height"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsableToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/collapsing_toolbar_layout_height"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="false">
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="@dimen/top_margin"
+                    android:src="@drawable/ic_account_circle" />
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/collapsing_toolbar_layout_height"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:background="@color/colorAccent">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="@dimen/margin_end"
+                    android:background="@drawable/rounded_shape"
+                    android:clickable="false"
+                    android:text="     Eric Bratter     " />
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="@dimen/top_margin"
-            android:src="@drawable/ic_account_circle" />
+            </android.support.v7.widget.LinearLayoutCompat>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginBottom="@dimen/margin_end"
-            android:text="Eric Bratter"
-            android:theme="@style/AppTheme.RoundedCornerMaterialButton"
-            android:clickable="false"
-            />
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
 
         <LinearLayout
             android:id="@+id/textViewLinearLayout"
@@ -71,8 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_input_layout_height"
                 android:layout_marginStart="@dimen/margin_start"
-                android:layout_marginEnd="@dimen/margin_end"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/margin_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent">
@@ -81,9 +69,9 @@
                     android:id="@+id/firstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/firstNameHint"
-                    android:inputType="none"
-                    android:focusable="false" />
+                    android:inputType="none" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -92,8 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_input_layout_height"
                 android:layout_marginStart="@dimen/margin_start"
-                android:layout_marginEnd="@dimen/margin_end"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/margin_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/firstNameTextInputLayout">
@@ -102,9 +90,9 @@
                     android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/lastNameHint"
-                    android:inputType="none"
-                    android:focusable="false" />
+                    android:inputType="none" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -113,8 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_input_layout_height"
                 android:layout_marginStart="@dimen/margin_start"
-                android:layout_marginEnd="@dimen/margin_end"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/margin_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent">
@@ -123,9 +111,9 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/userIdOrEmailHint"
-                    android:inputType="none"
-                    android:focusable="false" />
+                    android:inputType="none" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -144,9 +132,9 @@
                     android:id="@+id/mobilePhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:hint="@string/mobilePhoneHint"
-                    android:inputType="none"
-                    android:focusable="false"/>
+                    android:inputType="none" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -156,8 +144,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_input_layout_height"
                 android:layout_marginStart="@dimen/margin_start"
-                android:layout_marginEnd="@dimen/margin_end"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/margin_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent">
@@ -166,10 +154,10 @@
                     android:id="@+id/birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/birthdayHint"
                     android:clickable="true"
-                    android:inputType="none"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:hint="@string/birthdayHint"
+                    android:inputType="none" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -177,4 +165,19 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nestedScrollView2"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+</android.support.constraint.ConstraintLayout>

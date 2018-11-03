@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/collapsing_toolbar_layout_height"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            android:background="#000000"
             app:titleEnabled="false">
 
             <ImageView
