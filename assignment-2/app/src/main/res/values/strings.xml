@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">AndroidUIandLogin-EricBratter</string>
+    <string name="userIdOrEmailHint">Email</string>
+    <string name="firstNameHint">First Name</string>
+    <string name="lastNameHint">Last Name</string>
+    <string name="passwordHint">Password</string>
+    <string name="mobilePhoneHint">Mobile Phone Number</string>
+    <string name="birthdayHint">Birthday</string>
+    <string name="create_account">Create Account</string>
+    <string name="login">Login</string>
+    <string name="signup">No Account? No Problem. Sign up!</string>
+    <string name="already_have_account">Already have an account? Login in!</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="login_or_signup">Login / Signup</string>
+    <string name="invalid_email">Invalid Email Address.</string>
+    <string name="invalid_password">Password must be minimum 8 characters.</string>
+    <string name="required">Required.</string>
+    <string name="authenticating">Authenticating...</string>
+</resources>

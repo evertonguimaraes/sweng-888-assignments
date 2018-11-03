@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/ericbratter/Developer/AndroidStudioProjects/AndroidAppEric_Bratter/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
+            "outputFile": "/Users/ericbratter/Developer/AndroidStudioProjects/sweng-888-assignments/assignment-1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
                     "source": "/Users/ericbratter/.gradle/caches/transforms-1/files-1.1/design-28.0.0.aar/799400bd57760dbc938de603883c4f57/res/values-sw600dp-v13/values-sw600dp-v13.xml",
