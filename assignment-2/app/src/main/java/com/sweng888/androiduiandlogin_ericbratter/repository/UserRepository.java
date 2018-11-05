@@ -4,11 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.sweng888.androiduiandlogin_ericbratter.exception.RepositoryException;
+import com.sweng888.androiduiandlogin_ericbratter.exception.RepositoryExceptionCode;
 import com.sweng888.androiduiandlogin_ericbratter.model.User;
 import com.sweng888.androiduiandlogin_ericbratter.repository.tables.UserTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -26,7 +30,43 @@ public class UserRepository implements IRepository<User, String> {
 
     @Override
     public Observable<List<User>> get() {
-        return null;
+        return Observable.<List<User>>create(new ObservableOnSubscribe<List<User>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<User>> emitter) throws Exception {
+                String[] projection = {
+                        UserTable.COLUMN_NAME_ID,
+                        UserTable.COLUMN_NAME_FIRST_NAME,
+                        UserTable.COLUMN_NAME_LAST_NAME,
+                        UserTable.COLUMN_NAME_BIRTHDAY,
+                        UserTable.COLUMN_NAME_PASSWORD,
+                        UserTable.COLUMN_NAME_MOBILE_PHONE
+                };
+
+
+                SQLiteDatabase db = databaseAccess.getReadableDatabase();
+                Cursor cursor = db.query(UserTable.TABLE_NAME, projection, null, null,
+                        null, null, null);
+
+                List<User> users = new ArrayList<>();
+
+                while(cursor.moveToNext()){
+                    User u = User.builder()
+                            .email(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_ID)))
+                            .firstName(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_FIRST_NAME)))
+                            .lastName(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_LAST_NAME)))
+                            .birthday(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_BIRTHDAY)))
+                            .password(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_PASSWORD)))
+                            .phoneNumber(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_NAME_MOBILE_PHONE)))
+                            .build();
+
+                    users.add(u);
+                }
+
+                emitter.onNext(users);
+                cursor.close();
+                emitter.onComplete();
+            }
+        });
     }
 
     @Override
@@ -87,15 +127,20 @@ public class UserRepository implements IRepository<User, String> {
                 values.put(UserTable.COLUMN_NAME_PASSWORD, user.getPassword());
                 values.put(UserTable.COLUMN_NAME_MOBILE_PHONE, user.getPhoneNumber());
 
-                // Insert the new row, returning the primary key value of the new row
-                long newRowId = db.insert(UserTable.TABLE_NAME, null, values);
+                try {
+                    // Insert the new row, returning the primary key value of the new row
+                    long newRowId = db.insertOrThrow(UserTable.TABLE_NAME, null, values);
 
-                if(newRowId > 0) {
-                    emitter.onNext(user);
-                    emitter.onComplete();
-                }else{
-                    emitter.onError(new SQLException("Error saving to the database"));
+                    if (newRowId > 0) {
+                        emitter.onNext(user);
+                    } else {
+                        emitter.onError(new RepositoryException(RepositoryExceptionCode.INSERT_FAILED, "Unable to create record on DB"));
+                    }
+                } catch(SQLiteConstraintException e){
+                    emitter.onError(new RepositoryException(RepositoryExceptionCode.DUPLICATE_RECORD, e.getMessage()));
                 }
+
+                emitter.onComplete();
             }
         });
     }

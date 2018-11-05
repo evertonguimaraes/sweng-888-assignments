@@ -5,6 +5,8 @@
     <dimen name="top_margin_large">32dp</dimen>
     <dimen name="top_margin">16dp</dimen>
     <dimen name="top_margin_small">8dp</dimen>
+    <dimen name="bottom_margin">16dp</dimen>
+    <dimen name="bottom_margin_small">8dp</dimen>
     <dimen name="margin_start">20dp</dimen>
     <dimen name="margin_end">20dp</dimen>
     <!--<dimen name"edit_text_height"></dimen>-->

@@ -30,7 +30,7 @@ public class LoginUserEvent {
                 .filter(new Predicate<User>() {
                     @Override
                     public boolean test(User user) throws Exception {
-                        Thread.sleep(3000); // Simulator some time delay here
+                        Thread.sleep(2000); // Simulate some time delay here
                         return user.getPassword().equals(password);
                     }
                 })

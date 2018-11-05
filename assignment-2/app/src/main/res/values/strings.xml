@@ -17,4 +17,10 @@
     <string name="required">Required.</string>
     <string name="authenticating">Authenticating...</string>
     <string name="welcome">Welcome</string>
+    <string name="login_failed">Login Failed!</string>
+    <string name="user_created">User Created Successfully!</string>
+    <string name="user_already_exists">User with the provided email already exists.</string>
+    <string name="user_creation_failed">User creation failed. Please try again.</string>
+    <string name="user_list">Full User Listing</string>
+    <string name="all_users">All Users</string>
 </resources>

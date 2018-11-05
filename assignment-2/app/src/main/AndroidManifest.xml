@@ -19,8 +19,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupActivity" android:parentActivityName=".LoginActivity" android:label="@string/create_new_account" />
-        <activity android:name=".UserProfileActivity" android:parentActivityName=".LoginActivity" android:label="@string/welcome"></activity>
+            android:name=".SignupActivity"
+            android:label="@string/create_new_account"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="@string/welcome"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".UserListingActivity" android:label="@string/all_users"></activity>
     </application>
 
 </manifest>

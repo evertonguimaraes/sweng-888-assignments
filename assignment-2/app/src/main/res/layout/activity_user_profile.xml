@@ -21,6 +21,7 @@
                     android:src="@drawable/ic_account_circle" />
 
                 <Button
+                    android:id="@+id/headerButtonFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginBottom="@dimen/margin_end"

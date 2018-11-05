@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sweng888.androiduiandlogin_ericbratter.events.CreateUserEvent;
+import com.sweng888.androiduiandlogin_ericbratter.exception.RepositoryException;
+import com.sweng888.androiduiandlogin_ericbratter.exception.RepositoryExceptionCode;
 import com.sweng888.androiduiandlogin_ericbratter.model.User;
 import com.sweng888.androiduiandlogin_ericbratter.repository.UserRepository;
 import com.sweng888.androiduiandlogin_ericbratter.validators.EmailTextValidator;
@@ -35,11 +38,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
+    private UserRepository repository;
+    private Disposable createUserEventSubscription;
     private TextValidationWatcher mEmailValidatrionWatcher,
             mPasswordValidationWatcher,
             mFirstNameValidationWatcher,
@@ -64,6 +70,33 @@ public class SignupActivity extends AppCompatActivity {
     @BindView(R.id.emailTextInputLayout)
     TextInputLayout mEmailInputLayout;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+
+        ButterKnife.bind(this);
+
+        repository = new UserRepository(this);
+
+        mEmailValidatrionWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.emailTextInputLayout), new EmailTextValidator(), R.string.invalid_email);
+        this.mEmail.addTextChangedListener(mEmailValidatrionWatcher);
+
+        mPasswordValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.passwordTextInputLayout), new PasswordTextValidator(), R.string.invalid_password);
+        mPassword.addTextChangedListener(mPasswordValidationWatcher);
+
+        mFirstNameValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.firstNameTextInputLayout), new PlainTextValidator(), R.string.required);
+        mFirstName.addTextChangedListener(mFirstNameValidationWatcher);
+
+        mLastNameValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.lastNameTextInputLayout), new PlainTextValidator(), R.string.required);
+        mLastName.addTextChangedListener(mLastNameValidationWatcher);
+
+        // As we force entry via the date picker only need to validate we have a value
+        mBirthdayValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.birthdayTextInputLayout), new PlainTextValidator(), R.string.required);
+        mBirthday.addTextChangedListener(mBirthdayValidationWatcher);
+
+    }
+
     @OnClick(R.id.createAccountButton)
     public void onCreateAccount(View view) {
         if (this.isValid()) {
@@ -76,23 +109,12 @@ public class SignupActivity extends AppCompatActivity {
                     .password(this.mPassword.getText().toString())
                     .build();
 
-            CreateUserEvent event = CreateUserEvent.getInstance(new UserRepository(this));
-            event.execute(u).subscribe(
-                    new Consumer<User>() {
-                        @Override
-                        public void accept(User user) throws Exception {
-                            Toast.makeText(SignupActivity.this, "User Created", Toast.LENGTH_LONG).show();
-                            Intent upIntent = NavUtils.getParentActivityIntent(SignupActivity.this);
-                            NavUtils.navigateUpTo(SignupActivity.this, upIntent);
-                        }
-                    },
-                    new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
+            CreateUserEvent event = CreateUserEvent.getInstance(repository);
 
-                        }
-                    }
-            );
+            createUserEventSubscription = event.execute(u)
+                    .subscribe(
+                            this.getCreateUserEventOnNextConsumer(),
+                            this.getUserCreateEventOnErrorConsumer());
         }
     }
 
@@ -123,29 +145,33 @@ public class SignupActivity extends AppCompatActivity {
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+    // Not the cleanest way but works for now. Need to think of a better way for this
+    private Consumer getUserCreateEventOnErrorConsumer() {
+        return new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                if (throwable instanceof RepositoryException) {
+                    RepositoryException e = (RepositoryException) throwable;
+                    if (e.getExceptionCode() == RepositoryExceptionCode.DUPLICATE_RECORD) {
+                        Toast.makeText(SignupActivity.this, R.string.user_already_exists, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
 
-        ButterKnife.bind(this);
+                Toast.makeText(SignupActivity.this, R.string.user_creation_failed, Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
 
-        mEmailValidatrionWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.emailTextInputLayout), new EmailTextValidator(), R.string.invalid_email);
-        this.mEmail.addTextChangedListener(mEmailValidatrionWatcher);
-
-        mPasswordValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.passwordTextInputLayout), new PasswordTextValidator(), R.string.invalid_password);
-        mPassword.addTextChangedListener(mPasswordValidationWatcher);
-
-        mFirstNameValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.firstNameTextInputLayout), new PlainTextValidator(), R.string.required);
-        mFirstName.addTextChangedListener(mFirstNameValidationWatcher);
-
-        mLastNameValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.lastNameTextInputLayout), new PlainTextValidator(), R.string.required);
-        mLastName.addTextChangedListener(mLastNameValidationWatcher);
-
-        // As we force entry via the date picker only need to validate we have a value
-        mBirthdayValidationWatcher = new TextValidationWatcher((TextInputLayout) findViewById(R.id.birthdayTextInputLayout), new PlainTextValidator(), R.string.required);
-        mBirthday.addTextChangedListener(mBirthdayValidationWatcher);
-
+    private Consumer getCreateUserEventOnNextConsumer() {
+        return new Consumer<User>() {
+            @Override
+            public void accept(User user) throws Exception {
+                Toast.makeText(SignupActivity.this, R.string.user_created, Toast.LENGTH_LONG).show();
+                Intent upIntent = NavUtils.getParentActivityIntent(SignupActivity.this);
+                NavUtils.navigateUpTo(SignupActivity.this, upIntent);
+            }
+        };
     }
 
     private boolean isValid() {
@@ -156,5 +182,15 @@ public class SignupActivity extends AppCompatActivity {
         boolean birthdayIsValid = this.mBirthdayValidationWatcher.validate(this.mBirthday.getText().toString());
 
         return emailIsValid && passwordIsValid && firstNameIsValid && lastNameIsValid && birthdayIsValid;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.repository.destroy();
+
+        if(this.createUserEventSubscription != null && ! this.createUserEventSubscription.isDisposed()) {
+            this.createUserEventSubscription.dispose();
+        }
     }
 }
