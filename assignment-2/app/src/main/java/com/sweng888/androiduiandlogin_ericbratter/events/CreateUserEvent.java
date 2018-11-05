@@ -13,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class CreateUserEvent {
+    private static final String LOG_TAG = "CreateUserEvent";
 
     private UserRepository repository;
 
