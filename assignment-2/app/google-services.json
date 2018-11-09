@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "223897163212",
+    "firebase_url": "https://androiduiandlogin-ericbratter.firebaseio.com",
+    "project_id": "androiduiandlogin-ericbratter",
+    "storage_bucket": "androiduiandlogin-ericbratter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223897163212:android:7343cd811afcd2c9",
+        "android_client_info": {
+          "package_name": "com.sweng888.androiduiandlogin_ericbratter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223897163212-0f9dum1c9irn7m87kg0nf8cpr97ip9p8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sweng888.androiduiandlogin_ericbratter",
+            "certificate_hash": "19d77178bf01128f35cfe19ab93625c3c1167f51"
+          }
+        },
+        {
+          "client_id": "223897163212-735rs3a5n6vpoars6bm4g40i1vvckndb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPcpPgRuxXUzzq1qPrqHvaptqQHA8bXD0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223897163212-735rs3a5n6vpoars6bm4g40i1vvckndb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

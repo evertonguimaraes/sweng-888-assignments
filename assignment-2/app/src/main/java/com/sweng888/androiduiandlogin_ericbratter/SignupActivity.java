@@ -1,6 +1,7 @@
 package com.sweng888.androiduiandlogin_ericbratter;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -111,10 +112,16 @@ public class SignupActivity extends AppCompatActivity {
 
             CreateUserEvent event = CreateUserEvent.getInstance(repository);
 
+            final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage(getString(R.string.authenticating));
+            progressDialog.show();
+
             createUserEventSubscription = event.execute(u)
                     .subscribe(
-                            this.getCreateUserEventOnNextConsumer(),
-                            this.getUserCreateEventOnErrorConsumer());
+                            this.getCreateUserEventOnNextConsumer(progressDialog),
+                            this.getUserCreateEventOnErrorConsumer(progressDialog));
         }
     }
 
@@ -146,10 +153,11 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     // Not the cleanest way but works for now. Need to think of a better way for this
-    private Consumer getUserCreateEventOnErrorConsumer() {
+    private Consumer getUserCreateEventOnErrorConsumer(final ProgressDialog progressDialog) {
         return new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                progressDialog.dismiss();
                 if (throwable instanceof RepositoryException) {
                     RepositoryException e = (RepositoryException) throwable;
                     if (e.getExceptionCode() == RepositoryExceptionCode.DUPLICATE_RECORD) {
@@ -163,10 +171,11 @@ public class SignupActivity extends AppCompatActivity {
         };
     }
 
-    private Consumer getCreateUserEventOnNextConsumer() {
+    private Consumer getCreateUserEventOnNextConsumer(final ProgressDialog progressDialog) {
         return new Consumer<User>() {
             @Override
             public void accept(User user) throws Exception {
+                progressDialog.dismiss();
                 Toast.makeText(SignupActivity.this, R.string.user_created, Toast.LENGTH_LONG).show();
                 Intent upIntent = NavUtils.getParentActivityIntent(SignupActivity.this);
                 NavUtils.navigateUpTo(SignupActivity.this, upIntent);
